@@ -1,17 +1,28 @@
-function whatIsInAName(collection, source) {
-    collection = [{first: "Romeo", last: "Montague"}, {first: "Mercutio", last: null}];
-    source = {first: "Tybalt", last: "Capulet"};
+function buildFilterMap(collection, source) {
+    var my_map = new Map();
+    var index = 0;
     for (var newobject in collection) {
-        var collectedObject= collection[newobject];
-        for (var name in collectedObject) {
-            if (collectedObject.hasOwnProperty(name)) {
-                console.log('this is fog (' +
-                    name + ') for sure. Value: ' + collectedObject[name]);
+        var collectedObject = collection[newobject];
+        var selectedLookup = source;
+        for (var propertyLookup in selectedLookup) {
+            if (collectedObject.hasOwnProperty(propertyLookup)) {
+                if (selectedLookup[propertyLookup] === collectedObject[propertyLookup]) {
+                    my_map.set(index, collection[index]);
+                }
+            } else {
+                my_map.delete(index);
+                break;
             }
-            else {
-                console.log(name); // toString or something else
-            }
+
         }
+        index++;
     }
+    return Array.from(my_map.values());
+}
+function whatIsInAName(collection, source) {
+    collection = [{"a": 1, "b": 2}, {"a": 1}, {"a": 1, "b": 2, "c": 2}];
+    source = {"a": 1, "c": 2};
+    var arr = [];
+    arr = buildFilterMap(collection, source);
 }
 
