@@ -104,11 +104,30 @@ function translatePigLatin(str) {
  *
  */
 function pairElement(str) {
-    var my_map= new Map()
-    for(var i=0;i<str.length;i++){
-        my_map.set(str[i],str[i]);
+    var my_map = []
+    for (var i = 0; i < str.length; i++) {
+        switch (str.charAt(i)) {
+            case 'A':
+                var arr = [str.charAt(i), "T"];
+                my_map[i] = arr;
+                break;
+            case 'T':
+                var arr = [str.charAt(i), "A"];
+                my_map[i] = arr;
+                break;
+            case 'C':
+                var arr = [str.charAt(i), "G"];
+                my_map[i] = arr;
+                break;
+            case 'G':
+                var arr = [str.charAt(i), "C"];
+                my_map[i] = arr;
+                break;
+            default:
+                console.log('default');
+        }
     }
-   return str;
+    return my_map;
 }
 
 pairElement("GCG");
@@ -143,10 +162,8 @@ function fearNotLetter(str) {
         for (var firstcharidx = 0; firstcharidx < str.length; firstcharidx++) {
             temparr.push(arr[firstcharidx]);
         }
-        console.log(temparr);
         for (var k = 0; k < temparr.length; k++) {
             if (temparr[k] !== str[k]) {
-                console.log(temparr[k]);
                 return temparr[k];
             }
         }
@@ -154,3 +171,40 @@ function fearNotLetter(str) {
     return str;
 }
 
+/**
+ * booWho(true) should return true.
+ * booWho(false) should return true.
+ * booWho([1, 2, 3]) should return false.
+ * booWho([].slice) should return false.
+ * booWho({ "a": 1 }) should return false.
+ * booWho(1) should return false.
+ * booWho(NaN) should return false.
+ * booWho("a") should return false.
+ * booWho("true") should return false.
+ * booWho("false") should return false.
+ */
+function booWho(bool) {
+    // What is the new fad diet for ghost developers? The Boolean.
+    if (bool === true || bool === false) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+/**
+ * uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]) should return [1, 3, 2, 5, 4].
+ * uniteUnique([1, 3, 2], [1, [5]], [2, [4]]) should return [1, 3, 2, [5], [4]].
+ * uniteUnique([1, 2, 3], [5, 2, 1]) should return [1, 2, 3, 5].
+ * uniteUnique([1, 2, 3], [5, 2, 1, 4], [2, 1], [6, 7, 8]) should return [1, 2, 3, 5, 4, 6, 7, 8].
+ */
+function uniteUnique(arr) {
+    var my_map = new Map();
+    for (var i = 0; i < arguments.length; i++) {
+        var arrs = arguments[i];
+        for (var j = 0; j < arrs.length; j++) {
+            my_map.set(arrs[j], arrs[j]);
+        }
+    }
+    return Array.from(my_map);
+}
