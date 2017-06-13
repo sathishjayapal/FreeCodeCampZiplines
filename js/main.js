@@ -208,3 +208,34 @@ function uniteUnique(arr) {
     }
     return Array.from(my_map);
 }
+
+
+/**
+ * convertHTML("Dolce & Gabbana") should return Dolce &​amp; Gabbana.
+ * convertHTML("Hamburgers < Pizza < Tacos") should return Hamburgers &​lt; Pizza &​lt; Tacos.
+ * convertHTML("Sixty > twelve") should return Sixty &​gt; twelve.
+ * convertHTML('Stuff in "quotation marks"') should return Stuff in &​quot;quotation marks&​quot;.
+ * convertHTML("Shindler's List") should return Shindler&​apos;s List.
+ * convertHTML("<>") should return &​lt;&​gt;.
+ * convertHTML("abc") should return abc.
+ */
+function convertHTML(str) {
+    // &colon;&rpar;
+    var my_map= new Map();
+    my_map.set('&','&​amp;');
+    my_map.set('<','&​lt;');
+    my_map.set('>','&​gt;');
+    my_map.set('"','&​quot;');
+    my_map.set('\'','&​apos;');
+    my_map.set('<>','&​lt;&​gt;');
+    for(var i=0;i<str.length;i++){
+        var selected= my_map.get(str.charAt(i));
+        if(my_map.has(str.charAt(i)))
+        str=str.replace(str.charAt(i),selected);
+
+    }
+    console.log(str);
+    return str;
+}
+
+convertHTML("Dolce & Gabbana");
