@@ -221,21 +221,49 @@ function uniteUnique(arr) {
  */
 function convertHTML(str) {
     // &colon;&rpar;
-    var my_map= new Map();
-    my_map.set('&','&​amp;');
-    my_map.set('<','&​lt;');
-    my_map.set('>','&​gt;');
-    my_map.set('"','&​quot;');
-    my_map.set('\'','&​apos;');
-    my_map.set('<>','&​lt;&​gt;');
-    for(var i=0;i<str.length;i++){
-        var selected= my_map.get(str.charAt(i));
-        if(my_map.has(str.charAt(i)))
-        str=str.replace(str.charAt(i),selected);
+    var my_map = new Map();
+    my_map.set('&', '&​amp;');
+    my_map.set('<', '&​lt;');
+    my_map.set('>', '&​gt;');
+    my_map.set('"', '&​quot;');
+    my_map.set('\'', '&​apos;');
+    my_map.set('<>', '&​lt;&​gt;');
+    for (var i = 0; i < str.length; i++) {
+        var selected = my_map.get(str.charAt(i));
+        if (my_map.has(str.charAt(i)))
+            str = str.replace(str.charAt(i), selected);
 
     }
     console.log(str);
     return str;
 }
 
-convertHTML("Dolce & Gabbana");
+/**
+ * spinalCase("This Is Spinal Tap") should return "this-is-spinal-tap".
+ * spinalCase("thisIsSpinalTap") should return "this-is-spinal-tap".
+ * spinalCase("The_Andy_Griffith_Show") should return "the-andy-griffith-show".
+ * spinalCase("Teletubbies say Eh-oh") should return "teletubbies-say-eh-oh".
+ * spinalCase("AllThe-small Things") should return "all-the-small-things"
+ */
+
+function spinalCase(str) {
+    var strArray = ["This Is Spinal Tap", "thisIsSpinalTap", "The_Andy_Griffith_Show", "Teletubbies say Eh-oh", "AllThe-small Things"]
+    for (var i = 0; i < strArray.length; i++) {
+        str = strArray[i];
+        if (strArray[i].split(' ').length > 2) {
+            str = str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase();
+            console.log(str);
+        } else {
+            var newStr='';
+            var len = 0;
+            for (var charVal = 0; charVal < str.length; charVal++) {
+                if (str[charVal] === str[charVal].toUpperCase()) {
+                    newStr = newStr + str.substr(len, charVal) + '-';
+                    len = charVal;
+                }
+            }
+            console.log('New Str' + newStr);
+        }
+    }
+    return str;
+}
