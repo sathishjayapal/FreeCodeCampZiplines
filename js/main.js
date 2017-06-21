@@ -247,22 +247,37 @@ function convertHTML(str) {
  */
 
 function spinalCase(str) {
-    var strArray = ["This Is Spinal Tap", "thisIsSpinalTap", "The_Andy_Griffith_Show", "Teletubbies say Eh-oh", "AllThe-small Things"]
+    //,"This Is Spinal Tap", "thisIsSpinalTap", "The_Andy_Griffith_Show", "Teletubbies say Eh-oh", "AllThe-small Things"
+    var strArray = ["thisIsSpinalTap"];
     for (var i = 0; i < strArray.length; i++) {
         str = strArray[i];
-        if (strArray[i].split(' ').length > 2) {
+        if (str.split(' ').length > 1) {
             str = str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase();
             console.log(str);
         } else {
-            var newStr='';
-            var len = 0;
-            for (var charVal = 0; charVal < str.length; charVal++) {
-                if (str[charVal] === str[charVal].toUpperCase()) {
-                    newStr = newStr + str.substr(len, charVal) + '-';
-                    len = charVal;
-                }
+            var lowecasestr = str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase();
+            if (lowecasestr.indexOf('-') > 0) {
+                str = lowecasestr;
+                return str;
             }
-            console.log('New Str' + newStr);
+            else {
+                var newStr = [];
+                var len = 0;
+                for (var charVal = 0; charVal < str.length; charVal++) {
+                    if (str[charVal] === str[charVal].toUpperCase()) {
+                        console.log("The pos is " + charVal);
+                        newStr.push((str.substring(len, charVal)).toLowerCase());
+                        len = charVal;
+                    }
+                }
+                str = '';
+                for (var newStrarr = 0; newStrarr < newStr.length; newStrarr++) {
+                    if (newStr[newStrarr].length > 0)
+                        str = str + ' ' + newStr[newStrarr];
+                }
+                str = str.substring(1, str.length);
+                console.log('New Str ' + str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase());
+            }
         }
     }
     return str;
