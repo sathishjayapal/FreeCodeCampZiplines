@@ -247,38 +247,58 @@ function convertHTML(str) {
  */
 
 function spinalCase(str) {
-    //,"This Is Spinal Tap", "thisIsSpinalTap", "The_Andy_Griffith_Show", "Teletubbies say Eh-oh", "AllThe-small Things"
-    var strArray = ["thisIsSpinalTap"];
+    var strArray = ["thisIsSpinalTap", "This Is Spinal Tap", "thisIsSpinalTap", "The_Andy_Griffith_Show", "Teletubbies say Eh-oh", "AllThe-small Things"];
+    var newStr = [];
+    var len = 0;
     for (var i = 0; i < strArray.length; i++) {
         str = strArray[i];
-        if (str.split(' ').length > 1) {
-            str = str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase();
-            console.log(str);
-        } else {
-            var lowecasestr = str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase();
-            if (lowecasestr.indexOf('-') > 0) {
-                str = lowecasestr;
-                return str;
-            }
-            else {
-                var newStr = [];
-                var len = 0;
-                for (var charVal = 0; charVal < str.length; charVal++) {
-                    if (str[charVal] === str[charVal].toUpperCase()) {
-                        console.log("The pos is " + charVal);
-                        newStr.push((str.substring(len, charVal)).toLowerCase());
-                        len = charVal;
-                    }
-                }
-                str = '';
-                for (var newStrarr = 0; newStrarr < newStr.length; newStrarr++) {
-                    if (newStr[newStrarr].length > 0)
-                        str = str + ' ' + newStr[newStrarr];
-                }
-                str = str.substring(1, str.length);
-                console.log('New Str ' + str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase());
+        for (var charVal = 0; charVal < str.length; charVal++) {
+            if (str[charVal] === str[charVal].toUpperCase()) {
+                var tempstr = (str.substring(len, charVal)).replace(/([^a-z0-9]+)/gi, '').trim().toLowerCase();
+                if (tempstr.length > 0)
+                    newStr.push(tempstr);
+                len = charVal;
             }
         }
+        if (len !== str.length) {
+            var tempstrinloop = (str.substring(len, charVal)).replace(/([^a-z0-9]+)/gi, '').trim().toLowerCase();
+            if (tempstrinloop.length > 0)
+                newStr.push(tempstrinloop);
+            len = str.length;
+        }
+        str = '';
+
+        for (var newStrarr = 0; newStrarr < newStr.length; newStrarr++) {
+            if (newStr[newStrarr].length > 0)
+                str = str + ' ' + newStr[newStrarr];
+        }
+        str = str.substring(1, str.length);
+        console.log("The str is " + str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase());
+
     }
-    return str;
+    return str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase();
+}
+function sumFibs(num) {
+    var oddNumArray = [];
+    var summed = 0;
+    oddNumArray.push(1);
+    for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+            i = i + 1;
+            console.log("Pushing" + i);
+            oddNumArray.push(i);
+        }
+        summed = checkOddNumSum(oddNumArray, num);
+        if (summed > num)
+            break;
+    }
+    console.log(summed);
+    return num;
+}
+function checkOddNumSum(arr, sumVal) {
+    var sum = 0;
+    for (var i = 0; i < arr.length; i++) {
+        sum = sum + arr[i];
+    }
+    return sum;
 }
