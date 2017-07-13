@@ -279,21 +279,16 @@ function spinalCase(str) {
     return str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase();
 }
 function sumFibs(num) {
-    var oddNumArray = [];
-    var summed = 0;
-    oddNumArray.push(1);
-    for (var i = 0; i < num; i++) {
+    var summed = 1;
+    for (var i = 0; i <= num; i++) {
         if (i % 2 === 0) {
-            i = i + 1;
-            console.log("Pushing" + i);
-            oddNumArray.push(i);
+            summed = summed + i;
         }
-        summed = checkOddNumSum(oddNumArray, num);
-        if (summed > num)
+        if (summed >= num)
             break;
     }
     console.log(summed);
-    return num;
+    return summed;
 }
 function checkOddNumSum(arr, sumVal) {
     var sum = 0;
@@ -301,4 +296,20 @@ function checkOddNumSum(arr, sumVal) {
         sum = sum + arr[i];
     }
     return sum;
+}
+/**
+ * sumPrimes(10) should return 17.
+ * sumPrimes(977) should return 73156
+ * @param num
+ * @returns {*}
+ */
+function sumPrimes(num) {
+    var summed = 1;
+    for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+            summed = summed + i;
+        }
+    }
+    console.log(summed);
+    return num;
 }
