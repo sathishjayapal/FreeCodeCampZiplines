@@ -279,16 +279,23 @@ function spinalCase(str) {
     return str.replace(/([^a-z0-9]+)/gi, '-').toLowerCase();
 }
 function sumFibs(num) {
-    var summed = 1;
+    var firstCountNumber = 0;
+    var secondCountNumber = 1;
+    var sum = 0;
+    var compileArr = [0, 1];
     for (var i = 0; i <= num; i++) {
-        if (i % 2 === 0) {
-            summed = summed + i;
-        }
-        if (summed >= num)
-            break;
+        sum = firstCountNumber + secondCountNumber;
+        firstCountNumber = secondCountNumber;
+        secondCountNumber = sum;
+        if (sum % 2 !== 0 && sum <= num)
+            compileArr.push(sum);
     }
-    console.log(summed);
-    return summed;
+    sum = 0;
+    for (var sumidx = 0; sumidx < compileArr.length; sumidx++) {
+        sum = sum + compileArr[sumidx];
+    }
+    console.log("Final sum is " + sum);
+    return sum;
 }
 function checkOddNumSum(arr, sumVal) {
     var sum = 0;
@@ -303,13 +310,57 @@ function checkOddNumSum(arr, sumVal) {
  * @param num
  * @returns {*}
  */
-function sumPrimes(num) {
-    var summed = 1;
-    for (var i = 0; i < num; i++) {
-        if (i % 2 === 0) {
+function sumAllPrimes(num) {
+    var summed = 0;
+    var toSumUpArr = [0];
+    for (var i = 2; i <= num; i++) {
+        if (isPrime(i)) {
             summed = summed + i;
+            toSumUpArr.push(i);
         }
     }
-    console.log(summed);
-    return num;
+    console.log(toSumUpArr);
+    return summed;
+}
+function isPrime(num) {
+    for (var i = 2; i < num; i++)
+        if (num % i === 0) return false;
+    return num !== 1;
+}
+
+/**
+ binaryAgent("01000001 01110010 01100101 01101110 00100111 01110100 00100000 01100010 01101111 01101110 01100110 01101001 01110010 01100101 01110011 00100000 01100110 01110101 01101110 00100001 00111111") should   return "Aren't bonfires fun!?"
+ binaryAgent("01001001 00100000 01101100 01101111 01110110 01100101 00100000 01000110 01110010 01100101 01100101 01000011 01101111 01100100 01100101 01000011 01100001 01101101 01110000 00100001") should return "I love FreeCodeCamp!"
+ */
+function binaryAgent(str) {
+    var data = str;
+    var dataArr = data.split(' ');
+    var finalArr = [];
+    for (var lt = 0; lt < dataArr.length; lt++) {
+        finalArr.push(String.fromCharCode(parseInt(dataArr[lt], 2)));
+    }
+
+    console.log( finalArr.join(''));
+    return finalArr.join('');
+}
+
+/**
+ steamrollArray([[["a"]], [["b"]]]) should return ["a", "b"].
+ steamrollArray([1, [2], [3, [[4]]]]) should return [1, 2, 3, 4].
+ steamrollArray([1, [], [3, [[4]]]]) should return [1, 3, 4].
+ steamrollArray([1, {}, [3, [[4]]]]) should return [1, {}, 3, 4].
+ */
+function steamrollArray(arr) {
+    var finalArr=[];
+    if(Array.isArray(arr))
+        console.log("OK Array");
+    for(var i=0;i<arr.length;i++){
+        if(!checkArray(arr[i]))
+            finalArr.push(arr[i]);
+    }
+    return arr;
+}
+function checkArray(arr){
+    return Array.isArray(arr)
+
 }
