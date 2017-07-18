@@ -340,7 +340,7 @@ function binaryAgent(str) {
         finalArr.push(String.fromCharCode(parseInt(dataArr[lt], 2)));
     }
 
-    console.log( finalArr.join(''));
+    console.log(finalArr.join(''));
     return finalArr.join('');
 }
 
@@ -351,16 +351,84 @@ function binaryAgent(str) {
  steamrollArray([1, {}, [3, [[4]]]]) should return [1, {}, 3, 4].
  */
 function steamrollArray(arr) {
-    var finalArr=[];
-    if(Array.isArray(arr))
+    var finalArr = [];
+    if (Array.isArray(arr))
         console.log("OK Array");
-    for(var i=0;i<arr.length;i++){
-        if(!checkArray(arr[i]))
+    for (var i = 0; i < arr.length; i++) {
+        if (!checkArray(arr[i]))
             finalArr.push(arr[i]);
     }
     return arr;
 }
-function checkArray(arr){
+function checkArray(arr) {
     return Array.isArray(arr)
 
+}
+
+/**
+
+ // Example inventory lists
+ var curInv = [
+ [21, "Bowling Ball"],
+ [2, "Dirty Sock"],
+ [1, "Hair Pin"],
+ [5, "Microphone"]
+ ];
+
+ var newInv = [
+ [2, "Hair Pin"],
+ [3, "Half-Eaten Apple"],
+ [67, "Bowling Ball"],
+ [7, "Toothpaste"]
+ ];
+
+ updateInventory(curInv, newInv);
+
+ */
+
+
+function updateInventory() {
+    var curInv = [
+        [21, "Bowling Ball"],
+        [2, "Dirty Sock"],
+        [1, "Hair Pin"],
+        [5, "Microphone"]
+    ];
+
+    var newInv = [
+        [2, "Hair Pin"],
+        [3, "Half-Eaten Apple"],
+        [67, "Bowling Ball"],
+        [7, "Toothpaste"]
+    ];
+    var arr1 = curInv;
+    var arr2 = newInv;
+    var arr1Map = new Map();
+    var arr2Map = new Map();
+    var arr3Map = new Map();
+    for (var j = 0; j < arr1.length; j++) {
+        var data1 = arr1[j][1];
+        var data2 = arr1[j][0];
+        arr1Map.set(data1, data2);
+        arr3Map.set(data1,data2);
+    }
+
+    for (var i = 0; i < arr2.length; i++) {
+        var keyVal = arr2[i][0];
+        var keyData = arr1Map.get(arr2[i][1]);
+        var sumVal;
+        if (keyData != undefined) {
+
+            sumVal = keyVal + keyData;
+            arr3Map.set(arr2[i][1],sumVal);
+            arr2Map.set(sumVal, arr2[i][1]);
+        } else {
+            arr3Map.set(arr2[i][1],keyVal);
+            arr2Map.set(keyVal, arr2[i][1]);
+        }
+
+    }
+
+    var dataInf = Array.from(arr2Map);
+    return dataInf;
 }
