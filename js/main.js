@@ -417,7 +417,7 @@ function updateInventory() {
         var keyVal = arr2[i][0];
         var keyData = arr1Map.get(arr2[i][1]);
         var sumVal;
-        if (keyData != undefined) {
+        if (keyData != 'undefined') {
 
             sumVal = keyVal + keyData;
             arr3Map.set(arr2[i][1],sumVal);
@@ -429,6 +429,9 @@ function updateInventory() {
 
     }
 
-    var dataInf = Array.from(arr2Map);
+    var dataInf = Array.from(arr3Map);
+    for(var k=0;k<dataInf.length;k++){
+        arr1.push(dataInf[k][1],dataInf[k][0]);
+    }
     return dataInf;
 }
