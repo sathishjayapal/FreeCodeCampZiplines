@@ -410,7 +410,7 @@ function updateInventory() {
         var data1 = arr1[j][1];
         var data2 = arr1[j][0];
         arr1Map.set(data1, data2);
-        arr3Map.set(data1,data2);
+        arr3Map.set(data1, data2);
     }
 
     for (var i = 0; i < arr2.length; i++) {
@@ -420,18 +420,76 @@ function updateInventory() {
         if (keyData != 'undefined') {
 
             sumVal = keyVal + keyData;
-            arr3Map.set(arr2[i][1],sumVal);
+            arr3Map.set(arr2[i][1], sumVal);
             arr2Map.set(sumVal, arr2[i][1]);
         } else {
-            arr3Map.set(arr2[i][1],keyVal);
+            arr3Map.set(arr2[i][1], keyVal);
             arr2Map.set(keyVal, arr2[i][1]);
         }
 
     }
 
     var dataInf = Array.from(arr3Map);
-    for(var k=0;k<dataInf.length;k++){
-        arr1.push(dataInf[k][1],dataInf[k][0]);
+    for (var k = 0; k < dataInf.length; k++) {
+        arr1.push(dataInf[k][1], dataInf[k][0]);
     }
     return dataInf;
+
+
 }
+
+/**
+ * smallestCommons([1, 5]) should return a number.
+ * smallestCommons([1, 5]) should return 60.
+ * smallestCommons([5, 1]) should return 60.
+ * smallestCommons([1, 13]) should return 360360.
+ * smallestCommons([23, 18]) should return 6056820.
+ */
+
+function smallestCommons(min, max) {
+    function range(min, max) {
+        var arr = [];
+        for (var i = min; i <= max; i++) {
+            arr.push(i);
+        }
+        return arr;
+    }
+
+    function gcd(a, b) {
+        return !b ? a : gcd(b, a % b);
+    }
+
+    function lcm(a, b) {
+        return (a * b) / gcd(a, b);
+    }
+
+    var multiple = min;
+    range(min, max).forEach(function(n) {
+        multiple = lcm(multiple, n);
+    });
+
+    return multiple;
+}
+// function smallestCommons(arr) {
+//     arr = [23, 18];
+//     var sortedArr1 = arr.sort();
+//     var inBetween = [];
+//     var i = sortedArr1[0];
+//     do {
+//         inBetween.push(i);
+//         i++;
+//     } while (i < sortedArr1[sortedArr1.length - 1]);
+//     delete inBetween[0];
+//     var gcd = findGcm(sortedArr1[0], sortedArr1[1]);
+//     var lcm = sortedArr1[0];
+//     inBetween.forEach(function (n) {
+//         lcm = findLCM(lcm, n);
+//     });
+//     console.log(lcm);
+// }
+// function findLCM(val1, val2) {
+//     return val1 / (findGcm(val1, val2) * val2);
+// }
+// function findGcm(val1, val2) {
+//     return val2 ? findGcm(val2, val1 % val2) : val1;
+// }
