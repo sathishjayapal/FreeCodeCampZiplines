@@ -464,7 +464,7 @@ function smallestCommons(min, max) {
     }
 
     var multiple = min;
-    range(min, max).forEach(function(n) {
+    range(min, max).forEach(function (n) {
         multiple = lcm(multiple, n);
     });
 
@@ -493,3 +493,34 @@ function smallestCommons(min, max) {
 // function findGcm(val1, val2) {
 //     return val2 ? findGcm(val2, val1 % val2) : val1;
 // }
+var Person = function (firstAndLast) {
+    var firstAndLastVar = firstAndLast;
+    this.getFullName = function () {
+        return firstAndLastVar;
+    };
+    this.getFirstName = function () {
+        var arrayOfStrings = firstAndLastVar.split(' ');
+        firstAndLastVar = arrayOfStrings.join(' ');
+        return arrayOfStrings[0];
+    };
+    this.getLastName = function () {
+        var arrayOfStrings = firstAndLastVar.split(' ');
+        firstAndLastVar = arrayOfStrings.join(' ');
+        return arrayOfStrings[1];
+    };
+    this.setFirstName = function (firstName) {
+        var arrayOfStrings = firstAndLastVar.split(' ');
+        arrayOfStrings[0] = firstName;
+        firstAndLastVar = arrayOfStrings.join(' ');
+    };
+    this.setLastName = function (lastName) {
+        var arrayOfStrings = firstAndLastVar.split(' ');
+        arrayOfStrings[1] = lastName;
+        firstAndLastVar = arrayOfStrings.join(' ');
+    };
+
+    this.setFullName = function (firstAndLast) {
+        firstAndLastVar = firstAndLast;
+    };
+    return this;
+}
