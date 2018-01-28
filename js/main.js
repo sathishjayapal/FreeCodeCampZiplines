@@ -350,7 +350,8 @@ function binaryAgent(str) {
  steamrollArray([1, [], [3, [[4]]]]) should return [1, 3, 4].
  steamrollArray([1, {}, [3, [[4]]]]) should return [1, {}, 3, 4].
  */
-function steamrollArray(arr) {
+function steamrollArray() {
+    var arr = [[["a"]], [["b"]]];
     var finalArr = [];
     if (Array.isArray(arr))
         console.log("OK Array");
@@ -446,53 +447,88 @@ function updateInventory() {
  * smallestCommons([23, 18]) should return 6056820.
  */
 
-function smallestCommons(min, max) {
-    function range(min, max) {
-        var arr = [];
-        for (var i = min; i <= max; i++) {
-            arr.push(i);
-        }
-        return arr;
-    }
-
-    function gcd(a, b) {
-        return !b ? a : gcd(b, a % b);
-    }
-
-    function lcm(a, b) {
-        return (a * b) / gcd(a, b);
-    }
-
-    var multiple = min;
-    range(min, max).forEach(function (n) {
-        multiple = lcm(multiple, n);
+// function smallestCommons(min, max) {
+//     function range(min, max) {
+//         var arr = [];
+//         for (var i = min; i <= max; i++) {
+//             arr.push(i);
+//         }
+//         return arr;
+//     }
+//
+//     function gcd(a, b) {
+//         return !b ? a : gcd(b, a % b);
+//     }
+//
+//     function lcm(a, b) {
+//         return (a * b) / gcd(a, b);
+//     }
+//
+//     var multiple = min;
+//     range(min, max).forEach(function (n) {
+//         multiple = lcm(multiple, n);
+//     });
+//
+//     return multiple;
+// }
+function dropElements() {
+    calledElement([1, 2, 3, 4], function (n) {
+        return n > 5;
     });
 
-    return multiple;
 }
-// function smallestCommons(arr) {
-//     arr = [23, 18];
-//     var sortedArr1 = arr.sort();
-//     var inBetween = [];
-//     var i = sortedArr1[0];
-//     do {
-//         inBetween.push(i);
-//         i++;
-//     } while (i < sortedArr1[sortedArr1.length - 1]);
-//     delete inBetween[0];
-//     var gcd = findGcm(sortedArr1[0], sortedArr1[1]);
-//     var lcm = sortedArr1[0];
-//     inBetween.forEach(function (n) {
-//         lcm = findLCM(lcm, n);
-//     });
-//     console.log(lcm);
-// }
-// function findLCM(val1, val2) {
-//     return val1 / (findGcm(val1, val2) * val2);
-// }
-// function findGcm(val1, val2) {
-//     return val2 ? findGcm(val2, val1 % val2) : val1;
-// }
+
+/**
+ * dropElements([1, 2, 3, 9, 2], function(n) {return n > 2;}) should return [3, 9, 2]
+ *
+ */
+function calledElement(arr, func) {
+    var newArray = [];
+    var idx = arr.find(func);
+    if (idx === undefined)
+        return newArray;
+    else {
+        var retIdx = arr.indexOf(idx);
+
+        for (var x = retIdx; x < arr.length; x++)
+            newArray.push(arr[x]);
+        return newArray;
+    }
+}
+function smallestCommons(arr) {
+    // Sort array from greater to lowest
+    // This line of code was from Adam Doyle (http://github.com/Adoyle2014)
+    arr.sort(function (a, b) {
+        return b - a;
+    });
+
+    // Create new array and add all values from greater to smaller from the original array.
+    var newArr = [];
+    for (var i = arr[0]; i >= arr[1]; i--) {
+        newArr.push(i);
+    }
+
+    // Variables needed declared outside the loops.
+    var quot = 0;
+    var loop = 1;
+    var n;
+
+    // run code while n is not the same as the array lenght.
+    do {
+        quot = newArr[0] * loop * newArr[1];
+        for (n = 2; n < newArr.length; n++) {
+            if (quot % newArr[n] !== 0) {
+                break;
+            }
+        }
+
+        loop++;
+    } while (n !== newArr.length);
+
+    return quot;
+}
+
+
 var Person = function (firstAndLast) {
     var firstAndLastVar = firstAndLast;
     this.getFullName = function () {
@@ -524,3 +560,171 @@ var Person = function (firstAndLast) {
     };
     return this;
 }
+/*
+ * truthCheck([{"user": "Tinky-Winky", "sex": "male"}, {"user": "Dipsy", "sex": "male"}, {"user": "Laa-Laa", "sex": "female"}, {"user": "Po", "sex": "female"}], "sex");
+ * truthCheck([{"user": "Tinky-Winky", "sex": "male"}, {"user": "Dipsy", "sex": "male"}, {"user": "Laa-Laa", "sex": "female"}, {"user": "Po", "sex": "female"}], "sex") should return true.
+ * truthCheck([{"user": "Tinky-Winky", "sex": "male"}, {"user": "Dipsy"}, {"user": "Laa-Laa", "sex": "female"}, {"user": "Po", "sex": "female"}], "sex") should return false.
+ * truthCheck([{"user": "Tinky-Winky", "sex": "male", "age": 0}, {"user": "Dipsy", "sex": "male", "age": 3}, {"user": "Laa-Laa", "sex": "female", "age": 5}, {"user": "Po", "sex": "female", "age": 4}], "age") should return false.
+ * truthCheck([{"name": "Pete", "onBoat": true}, {"name": "Repeat", "onBoat": true}, {"name": "FastFoward", "onBoat": null}], "onBoat") should return false
+ * truthCheck([{"name": "Pete", "onBoat": true}, {"name": "Repeat", "onBoat": true, "alias": "Repete"}, {"name": "FastFoward", "onBoat": true}], "onBoat") should return true
+ * truthCheck([{"single": "yes"}], "single") should return true
+ * truthCheck([{"single": ""}, {"single": "double"}], "single") should return false
+ * truthCheck([{"single": "double"}, {"single": undefined}], "single") should return false
+ * truthCheck([{"single": "double"}, {"single": NaN}], "single") should return false
+ *
+ */
+function truthCheck() {
+    var data = [
+        {"user": "Tinky-Winky", "sex": "male"},
+        {"user": "Dipsy", "sex": "male"},
+        {"user": "Laa-Laa", "sex": "female"},
+        {"user": "Po", "sex": "female"}];
+    var falsedata = [{"user": "Tinky-Winky", "sex": "male", "age": 0}, {
+        "user": "Dipsy",
+        "sex": "male",
+        "age": 3
+    }, {"user": "Laa-Laa", "sex": "female", "age": 5}, {"user": "Po", "sex": "female", "age": 4}];
+    var looker = "age";
+    for (key in falsedata) {
+        if (falsedata.hasOwnProperty(key)) {
+            var tempLookup = falsedata[key][looker];
+            if (tempLookup)
+                console.log(falsedata[key][looker]);
+            else
+                console.log("No Cool");
+        }
+    }
+}
+/*addTogether(2, 3) should return 5.
+ addTogether(2)(3) should return 5.
+ addTogether("http://bit.ly/IqT6zt") should return undefined.
+ addTogether(2, "3") should return undefined.
+ addTogether(2)([3]) should return undefined.
+ */
+function addTogether() {
+    return false;
+}
+/**
+ * sym([1, 2, 3], [5, 2, 1, 4]) should return [3, 4, 5]
+ * sym([1, 2, 3], [5, 2, 1, 4])
+ * sym([1, 2, 5], [2, 3, 5], [3, 4, 5]) should return [1, 4, 5]
+ * sym([1, 2, 5], [2, 3, 5], [3, 4, 5]) should contain only three elements.
+ * sym([1, 1, 2, 5], [2, 2, 3, 5], [3, 4, 5, 5]) should return [1, 4, 5].
+ * sym([1, 1, 2, 5], [2, 2, 3, 5], [3, 4, 5, 5]) should contain only three elements.
+ * sym([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3]) should return [2, 3, 4, 6, 7].
+ * sym([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3]) should contain only five elements.
+ * sym([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3], [5, 3, 9, 8], [1]) should return [1, 2, 4, 5, 6, 7, 8, 9].
+ * sym([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3], [5, 3, 9, 8], [1]) should contain only eight elements.
+ *
+ * @param args
+ * @returns {*}
+ * [1, 2, 5], [2, 3, 5], [3, 4, 5]) should return [1, 4, 5] should return [2, 3, 4, 6, 7]
+ */
+sym = function () {
+    var d = [1, 2, 3];
+    var a = [5, 2, 1, 4];
+    sym1([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3]);//[2, 3, 4, 6, 7]
+}
+
+
+function sym1(args) {
+    var len = arguments.length;
+    var returnVar = [];
+    for (var itrts = 0; itrts < len; itrts++) {
+        var argarray= arguments[itrts];
+        var uniqueArray = argarray.filter(function(item, pos, self) {
+            return self.indexOf(item) == pos;
+        })
+        returnVar= printTwoArrays(returnVar, uniqueArray);
+    }
+    return returnVar;
+
+}
+printTwoArrays = function (args) {
+    var myMap = new Map();
+    var returnArray=[];
+    var firstLoop = arguments[0];
+    var secondLoop = arguments[1];
+    var removeMap = new Map();
+    for (var firstLoopIdx = 0; firstLoopIdx < firstLoop.length; firstLoopIdx++) {
+        if (!myMap.has(firstLoop[firstLoopIdx]))
+            myMap.set(firstLoop[firstLoopIdx], firstLoop[firstLoopIdx]);
+    }
+    for (var secondLoopIdx = 0; secondLoopIdx < secondLoop.length; secondLoopIdx++) {
+        if (myMap.has(secondLoop[secondLoopIdx]))
+            removeMap.set(secondLoop[secondLoopIdx], secondLoop[secondLoopIdx]);
+        else
+            myMap.set(secondLoop[secondLoopIdx], secondLoop[secondLoopIdx]);
+    }
+    myMap.forEach(function (value, key) {
+        console.log("My Map " + value);
+    });
+    removeMap.forEach(function (value, key) {
+        console.log("Remove Map " + value);
+    });
+    removeMap.forEach(function (value, key) {
+        if (myMap.has(key)) {
+            myMap.delete(key);
+        }
+    });
+    myMap.forEach(function (value, key) {
+        console.log(key + ' = ' + value);
+        returnArray.push(key);
+    });
+    return returnArray;
+}
+
+/*
+ steamrollArray([[["a"]], [["b"]]]) should return ["a", "b"].
+ steamrollArray([1, [2], [3, [[4]]]]) should return [1, 2, 3, 4].
+ steamrollArray([1, [], [3, [[4]]]]) should return [1, 3, 4].
+ steamrollArray([1, {}, [3, [[4]]]]) should return [1, {}, 3, 4].
+ */
+function steamrollArray() {
+    var initArr = [[["a"]], [["b"]]];
+    var veryFlatArr = flatten(initArr);
+    console.log(flatten(initArr));
+    // var initArr = [[["a"]], [["b"]]];
+    var flatArr = [];
+    for (var i = 0; i < initArr.length; i++) {
+        var returnVal = iterateArray(initArr[i]);
+        console.log("Got returned with " + returnVal);
+        if (Array.isArray(returnVal)) {
+            for (var j = 0; j < returnVal.length; j++) {
+                if (flatArr.indexOf(returnVal[j]) == -1) {
+                    flatArr.push(returnVal[j]);
+                }
+            }
+        } else if (flatArr.indexOf(returnVal) == -1) {
+            flatArr.push(returnVal);
+        }
+    }
+    var returnFinalAtr = [];
+    for (var finalitr = 0; finalitr < flatArr.length; finalitr++) {
+        if (!Array.isArray(flatArr[finalitr]))
+            returnFinalAtr.push(flatArr[finalitr]);
+    }
+    console.log('The length is' + returnFinalAtr);
+    return [];
+}
+function flatten(arr) {
+    return arr.reduce(function (flat, toFlatten) {
+        return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+    }, []);
+}
+function iterateArray(vardata) {
+    var newFlatArr = [];
+    if (Array.isArray(vardata)) {
+        for (var k = 0; k < vardata.length; k++) {
+            if (!vardata[k].length === 1) {
+                iterateArray(vardata[k]);
+            } else {
+                newFlatArr.push(vardata[k]);
+            }
+            iterateArray(vardata[k]);
+        }
+    }
+    newFlatArr.push(vardata);
+    return newFlatArr;
+}
+
